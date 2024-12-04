@@ -140,23 +140,34 @@ input.push("XXMMSMMSMSMMMSMAXMXAAMMSMSMMAAAMSMMXXXSAMAAAMXMMMMSXMASXMSMSMSAMXMAS
 input.push("SASAMXAAXXAAAAMMMSAMXMAAAAAMMMSMAAXASXSAMASXMAAAAASMSAMAAAXAMXMXXMMMMMSMMSMAMMAMAAXXXMMMXMASMXXAXXAAAAMAXAASMMMSAMXXAXXMAXAAAASAMXMMSAMXSXAX");
 input.push("SMMSSMSSSSSMSSXSAMXSSMAMSMSMXMAXSSMXSMSXMMAMSMSSMXSAMXSAASXMASMXAXSAMXXXAXMAMMASXMXSASMXMSXXMAXMSMSSMMSAMSXMASXAMMXMASXSMSMSSSMMXMAMSMMAAMMS");
 
-
-
+/*
+var input = [];
+input.push("MMMSXXMASM");
+input.push("MSAMXMSMSA");
+input.push("AMXSXMAAMM");
+input.push("MSAMASMSMX");
+input.push("XMASAMXAMM");
+input.push("XXAMMXXAMA");
+input.push("SMSMSASXSS");
+input.push("SAXAMASAAA");
+input.push("MAMMMXMMMM");
+input.push("MXMXAXMASX");
+*/
 
 function find(values,x,y,lookingfor){
     let array = [];
     let filtered =[];
     if(values[x-1]!=undefined){
-        array.push({"x":x-1,"y":y-1,"value":values[x-1].charAt(y-1)});
-        array.push({"x":x-1,"y":y,"value":values[x-1].charAt(y)});
-        array.push({"x":x-1,"y":y+1,"value":values[x-1].charAt(y+1)});
+        array.push({"x":x-1,"y":y-1,"value":values[x-1].charAt(y-1),"direction":"TL"});
+        array.push({"x":x-1,"y":y,"value":values[x-1].charAt(y),"direction":"T"});
+        array.push({"x":x-1,"y":y+1,"value":values[x-1].charAt(y+1),"direction":"TR"});
     }
-    array.push({"x":x,"y":y-1,"value":values[x].charAt(y-1)});
-    array.push({"x":x,"y":y+1,"value":values[x].charAt(y+1)});
+    array.push({"x":x,"y":y-1,"value":values[x].charAt(y-1),"direction":"L"});
+    array.push({"x":x,"y":y+1,"value":values[x].charAt(y+1),"direction":"R"});
     if(values[x+1]!=undefined){
-        array.push({"x":x+1,"y":y-1,"value":values[x+1].charAt(y-1)});
-        array.push({"x":x+1,"y":y,"value":values[x+1].charAt(y)});
-        array.push({"x":x+1,"y":y+1,"value":values[x+1].charAt(y+1)});
+        array.push({"x":x+1,"y":y-1,"value":values[x+1].charAt(y-1),"direction":"DL"});
+        array.push({"x":x+1,"y":y,"value":values[x+1].charAt(y),"direction":"D"});
+        array.push({"x":x+1,"y":y+1,"value":values[x+1].charAt(y+1),"direction":"DR"});
     }
     for(let i=0;i<array.length;i++){
         if(array[i].value==lookingfor){
@@ -180,12 +191,17 @@ for(var i=0;i<input.length;i++){
                 let linem = Ms[m];
                 if(linem!=undefined){
                     let As = find(input,linem.x,linem.y,"A");
-                    for(var a=0;m<As.length;a++){
+                    for(var a=0;a<As.length;a++){
                         let linea = As[a];
-                        if(linea!=undefined){
-                            let Ss = find(input,linea.x,linea.y,"S");
-                            for(var s=0;s<Ss.length;s++){
-                                total++;
+                        if(linea.direction==linem.direction){
+                            if(linea!=undefined){
+                                let Ss = find(input,linea.x,linea.y,"S");
+                                for(var s=0;s<Ss.length;s++){
+                                    //console.log(char+""+linem.value+""+linea.value+""+Ss[s].value);
+                                    if(Ss[s].direction==linea.direction){
+                                        total++;
+                                    }
+                                }
                             }
                         }
                     }
@@ -194,4 +210,4 @@ for(var i=0;i<input.length;i++){
         }
     }
 }
-Console.log(total);
+console.log(total);
